@@ -1,0 +1,32 @@
+Some Data:
+n=5:
+cubic took: 125 iterations
+exponential took: 32 iterations
+n=5 cubic: 148.0ms exp: 49.0ms const: 14.0ms
+n=5 cubic: 156.0ms exp: 49.0ms const: 176.0ms
+n=5 cubic: 319.0ms exp: 95.0ms const: 30.0ms
+n=5 cubic: 295.0ms exp: 104.0ms const: 39.0ms
+n=5 cubic: 164.0ms exp: 62.0ms const: 15.0ms
+
+n=10:
+cubic took: 1000 iterations
+exponential took: 1024 iterations
+n=10 cubic: 177.0ms exp: 131.0ms const: 14.0ms
+n=10 cubic: 159.0ms exp: 125.0ms const: 14.0ms
+n=10 cubic: 157.0ms exp: 124.0ms const: 14.0ms
+n=10 cubic: 159.0ms exp: 124.0ms const: 78.0ms
+n=10 cubic: 209.0ms exp: 251.0ms const: 56.0ms
+
+n=20:
+cubic took: 8000 iterations
+exponential took: 1048576 iterations
+n=20 cubic: 201.0ms exp: 85197.0ms const: 18.0ms
+n=20 cubic: 200.0ms exp: 91445.0ms const: 19.0ms
+n=20 cubic: 285.0ms exp: 118258.0ms const: 21.0ms
+n=20 cubic: 244.0ms exp: 111078.0ms const: 21.0ms
+n=20 cubic: 202.0ms exp: 86325.0ms const: 17.0ms
+
+From the data, you can see that the cubic function starts out with a longer runtime, however, as n increases, the exponential function increases at a much faster rate.
+An observation that I had is that the relative time for all 3 functions is usually similar for a given n, which means that it is possible to calculate how much longer the functions take relative to each other without the data being affected by random system interrupts or memory allocation delays.
+That being said, there are still some blatant outliers, especially in the constant runtime. This is probably because the runtime is so small that even slight interruptions or delays will greatly affect the time needed to run the function, especially at higher values of n where other functions will not be affected by small delays.
+Overall, even with the inconsistencies that come with testing runtime requirements, I think it is very clear that these 3 functions do properly display their intended runtime.

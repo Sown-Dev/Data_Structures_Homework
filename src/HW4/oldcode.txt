@@ -1,0 +1,85 @@
+if (charStack.isEmpty()) {
+                    if (chars[i] == ')' || chars[i] == '}' || chars[i] == ']' ) {
+                        return new EmptyStackError(line);
+                    }
+                    //need a seperate check for comments
+                    if (chars.length>i+1) {
+                        if (chars[i] == '*' && chars[i + 1] == '/') {
+                            return new EmptyStackError(line);
+                        }
+                    }
+                }
+
+
+                //this single if statement is here for quotes, as you need to make sure they're not in a comment. I didnt want to nest more if statements in the ones below so I made this one here
+                if(!charStack.isEmpty()) {
+                    if (!(charStack.peek() == '*') && chars[i] == '"') {
+                        charStack.push(chars[i]);
+                    }
+                }
+
+                //check to see if these symbols are in a comment or quote and thus need to be ignored
+                if(!charStack.isEmpty()){
+                    if (!(charStack.peek() == '"' || charStack.peek() == '*')) {
+
+
+                    if (chars[i] == '(' || chars[i] == '{' || chars[i] == '[') {
+                        charStack.push(chars[i]);
+                    }
+
+                    //unlike quotes, if you put a start comment inside a comment, it does nothing, so you have to check if its in a quote or comment
+                    if (i > 0) {
+                        if (chars[i] == '*' && chars[i - 1] == '/') {
+                            charStack.push(chars[i]);
+                        }
+                    }
+
+                    if (chars[i] == ')') {
+                        if (charStack.peek() == '(') {
+                            charStack.pop();
+                        } else {
+                            return new MismatchError(line, chars[i], charStack.peek());
+                        }
+                    }
+                    if (chars[i] == '}') {
+                        if (charStack.peek() == '{') {
+                            charStack.pop();
+                        } else {
+                            return new MismatchError(line, chars[i], charStack.peek());
+                        }
+                    }
+
+                    if (chars[i] == ']') {
+                        if (charStack.peek() == '[') {
+                            charStack.pop();
+                        } else {
+                            return new MismatchError(line, chars[i], charStack.peek());
+                        }
+                    }
+                }
+            }
+
+                //do the same check if its empty, but skip the comments
+                if(charStack.isEmpty()){
+
+                }
+
+                if (chars[i] == '"') {
+                    if (charStack.peek() == '"') {
+                        charStack.pop();
+                    } else {
+                        return new MismatchError(line, chars[i], charStack.peek());
+                    }
+                }
+
+                //since I'm checking the next character, I want to make sure that the next line doesnt give and ArrayOutofBoundException, in case someone uses a *
+                //at the end of a line
+                if(chars.length>i+1) {
+                    if (chars[i] == '*' && chars[i + 1] == '/') {
+                        if (charStack.peek() == '*') {
+                            charStack.pop();
+                        } else {
+                            return new MismatchError(line, chars[i], charStack.peek());
+                        }
+                    }
+                }
